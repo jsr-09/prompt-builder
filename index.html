@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Prompt Copier</title>
+</head>
+<body>
+    <h1>Prompt Generator</h1>
+    <p>Click the button to generate prompts:</p>
+
+    <button id="generatePrompts">Generate Prompts</button><br><br>
+    <button id="copyToClipboard" style="display: none;">Copy to Clipboard</button>
+
+    <h2>Generated Prompts:</h2>
+    <div id="output">
+    </div>
+
+    <script>
+        // Function to read a random line from a text file
+        function readRandomLineFromFile(filename) {
+            var lines = filename.split('\n');
+            var randomIndex = Math.floor(Math.random() * lines.length);
+            return lines[randomIndex];
+        }
+
+        // Function to copy text to clipboard
+        function copyTextToClipboard(text) {
+            var textarea = document.createElement("textarea");
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+        }
+
+        document.getElementById("generatePrompts").addEventListener("click", function() {
+            // Read the positive prompts from a file (modify the path to your file)
+            fetch('./positive.txt')
+                .then(response => response.text())
+                .then(positivePrompts => {
+                    // Read a random line from the positive prompts
+                    var positivePrompt = readRandomLineFromFile(positivePrompts);
+
+                    // Read the negative prompts from a file (modify the path to your file)
+                    fetch('./negative.txt')
+                        .then(response => response.text())
+                        .then(negativePrompts => {
+                            // Read a random line from the negative prompts
+                            var negativePrompt = readRandomLineFromFile(negativePrompts);
+
+                            // Display generated prompts
+                            var outputDiv = document.getElementById("output");
+                            // outputDiv.innerHTML = "Positive Prompt: " + positivePrompt + "<br> Negative Prompt: " + negativePrompt;
+                            outputDiv.innerHTML = positivePrompt + "<br>Negative prompt: " + negativePrompt + "\n Steps: 30, Sampler: DPM++ 2M Karras, CFG scale: 7.0, Seed: -1, Size: 1024x1024";
+
+                            // Show the "Copy" button and enable copying
+                            var copyButton = document.getElementById("copyToClipboard");
+                            copyButton.style.display = "block";
+                            copyButton.addEventListener("click", function() {
+                                copyTextToClipboard(outputDiv.textContent);
+                                alert("Generated prompts copied to clipboard!");
+                            });
+                        });
+                })
+                .catch(error => {
+                    console.error('An error occurred: ' + error);
+                });
+        });
+    </script>
+</body>
+</html>

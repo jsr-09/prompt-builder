@@ -1,0 +1,1 @@
+bad-hands-5,  easynegative,  (worst quality:2),  (low quality:2),  (normal quality:2),  lowres,  normal quality,  ((monochrome)),  ((grayscale)),  bad proportions,  render,  3d,  2d,  sketch,  painting,  digital art,  drawing,  poorly drawn,  blurry,  low details,  incomplete,  undetailed,  poorly drawn face,  ouf of focus,  blurred,  smudgy,  glossy,  glitchy,  strong,
